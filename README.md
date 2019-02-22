@@ -1,10 +1,11 @@
-Application for getting information about current stituation of running train.
+Application for retrieving the latest train running status information.
 
 # Usage
 
 `get_vr_info.sh --train 42 --destination "Tampere asema"`
 
-Output:
+Output example:
+
 ```json
 {
     "actualDifferenceInMinutes": -1,
