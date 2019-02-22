@@ -21,8 +21,10 @@ Output example:
 
 # Install (mac)
 
+```shell
 $ mkdir ~/bin
 $ cd ~/bin
 $ ln -s /path/to/location/of/this/file/get_vr_info.sh get_vr_info.sh
 $ echo "# ADD ~/bin FOLDER INTO PATH" >> ~/.bash_profile
 $ echo "export PATH=$PATH:~/bin" >> ~/.bash_profile 
+```
