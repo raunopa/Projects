@@ -3,6 +3,7 @@
 
 import sys
 import argparse
+from difflib import get_close_matches
 from urllib import request
 from datetime import datetime
 from dateutil import tz
@@ -71,6 +72,19 @@ def getInfoMessage(current_ts, trainBasicInfo, latestStation, latestStationInfo,
                    "targetStationArrivalTime": getTimeInCurrentZone(targetStationInfo['actualTime'])}
     return message
 
+def getClosestMatchesSation(targetStation,stations):
+    stationsList = [i['stationName'] for i in stations]
+    station = get_close_matches(targetStation,stationsList,n=1,cutoff=0.6)
+    if station[0] != targetStation:
+        answer = input ("Cannot find station '%s' from the list of stations. Did you mean '%s' (y/n)?" % (targetStation,station[0]))
+        if answer == 'y' or answer == 'Y':
+            return station[0]
+        else:
+            stations = get_close_matches(targetStation,stationsList,n=5,cutoff=0.6)
+            sys.exit("Try to use one of these station names: %s" % (", ".join(stations)))
+    return station[0]
+
+
 
 def main(train, targetStation):
     # load relevan train and stations information from rata.digitraffic
@@ -80,6 +94,9 @@ def main(train, targetStation):
     # find target station and generate returned json based information
     latestStation = searchLatestStation(trainInfo=trainInfo["timeTableRows"],
                                         keyName='liveEstimateTime')
+
+    targetStation = getClosestMatchesSation(targetStation, stations)
+
     targetStationMetaData = searchFromListOfDicts(listOfDict=stations,
                                                   key=['stationName'],
                                                   value=[targetStation])
